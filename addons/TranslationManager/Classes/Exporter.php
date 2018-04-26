@@ -17,7 +17,7 @@ class Exporter extends Translatable
      *
      * @var string
      */
-    protected $exportPath = 'exports/';
+    protected $exportPath;
 
     /**
      * The pages that will be exported.
@@ -63,7 +63,8 @@ class Exporter extends Translatable
 
     public function __construct($config)
     {
-        $this->config = $config;
+        $this->exportPath = dirname(__FILE__) . '/../exports/';
+        $this->config     = $config;
 
         if (is_string($this->config['exclude_page_ids'])) {
             $this->config['exclude_page_ids'] = explode(',', $this->config['exclude_page_ids']);

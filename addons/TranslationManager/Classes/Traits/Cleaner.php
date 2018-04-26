@@ -32,7 +32,7 @@ trait Cleaner
 
         // Find values that have an untranslatable format and remove them.
         foreach ($data as $key => $value) {
-            if (!$this->isTranslatable($value)) {
+            if (!is_string($value) || !$this->isTranslatable($value)) {
                 unset($data[$key]);
             }
         }

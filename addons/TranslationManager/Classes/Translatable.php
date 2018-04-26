@@ -84,6 +84,10 @@ class Translatable
                     $processedData = $this->handleTableValues($value, $key, $processedData);
                     break;
 
+                case 'bard':
+                    $processedData = $this->handleBardValues($value, $key, $processedData);
+                    break;
+
                 // Regular string values.
                 default:
                     $processedData[$key] = $value;
@@ -152,6 +156,25 @@ class Translatable
     }
 
     /**
+     * Breaks down bard values into strings that can be translated.
+     *
+     * @param  array $bard
+     * @param  string $key
+     * @param  array $data
+     * @return array
+     */
+    private function handleBardValues($bard, $key, $data)
+    {
+        foreach ($bard as $rowIndex => $set) {
+            foreach ($set as $setKey => $value) {
+                $data[$key . '.' . $rowIndex . '.' . $setKey] = $value;
+            }
+        }
+
+        return $data;
+    }
+
+    /**
      * Returns field type information about a field.
      *
      * @param  Statamic\API\Page $page
@@ -162,10 +185,18 @@ class Translatable
     {
         $defaultLocale = $page->locales()[0];
 
-        if (get_class($page) == 'Statamic\Data\Entries\Entry') {
-            $fieldset = Fieldset::get($page->in($defaultLocale)->collection()->get('fieldset'))->contents();
+        if (in_array(get_class($page), ['Statamic\Data\Entries\Entry'])) {
+            try {
+                $fieldset = Fieldset::get($page->in($defaultLocale)->collection()->get('fieldset'))->contents();
+            } catch (\Exception $e) {
+                $fieldset = Fieldset::get($page->in($defaultLocale)->get('fieldset'))->contents();
+            }
         } else {
-            $fieldset = Fieldset::get($page->in($defaultLocale)->get('fieldset'))->contents();
+            try {
+                $fieldset = Fieldset::get($page->in($defaultLocale)->get('fieldset'))->contents();
+            } catch (\Exception $e) {
+                $fieldset = Fieldset::get($page->in($defaultLocale)->collection()->get('fieldset'))->contents();
+            }
         }
 
         // Arrays are formatted as field.index. We only want the field name.
@@ -189,6 +220,10 @@ class Translatable
     {
         $field = $this->getFieldInfo($page, $field);
 
-        return (!empty($field)) ? $field['type'] : 'string';
+        try {
+            return (!empty($field)) ? $field['type'] : 'string';
+        } catch (\Exception $error) {
+            return 'string';
+        }
     }
 }
