@@ -1,0 +1,12 @@
+routes:
+  /:
+    uses: index
+    as: translationmanager.index
+
+  /import:
+    uses: getImport
+    as: translationmanager.import
+
+  /export:
+    uses: getExport
+    as: translationmanager.export

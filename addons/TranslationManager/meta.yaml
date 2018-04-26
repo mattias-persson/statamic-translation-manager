@@ -1,0 +1,6 @@
+name: TranslationManager
+version: "0.1"
+description: Import and export translations
+url: https://github.com/mattias-persson/statamic-translation-manager
+developer: Mattias Persson
+developer_url: https://happypixels.se

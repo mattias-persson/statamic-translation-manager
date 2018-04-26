@@ -1,0 +1,13 @@
+fields:
+  page_url:
+    type: text
+    display: 'Want to add a different domain for the url of each exported page?'
+  page_query_string:
+    type: text
+    display: 'Want to add a query string to the url of each exported page?'
+  exclude_page_ids:
+    type: text
+    display: 'Want to exclude any pages? Enter page ids separated by a comma'
+  exclude_collection_slugs:
+    type: text
+    display: 'Want to exclude any collections? Enter collection slugs separated by a comma'
