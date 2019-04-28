@@ -26,7 +26,7 @@ class FieldPreparator
      */
     public function prepare($item)
     {
-        foreach ($item->data() as $fieldName => $value) {
+        foreach ($item->in(Locale::default())->data() as $fieldName => $value) {
             $field = new Field($item, $fieldName);
 
             // Determine whether the field should be translated, or skipped.
@@ -38,8 +38,8 @@ class FieldPreparator
             // values in different ways, so we have to map them into a
             // common structure before exporting them.
             $this->handleFieldTypes($field, [
-                'original_value' => $item->in(Locale::default())->get($fieldName),
-                'localized_value' => $value,
+                'original_value' => $value,
+                'localized_value' => $item->get($fieldName) ?: '',
                 'field_name' => $fieldName,
                 'field_type' => $field->type,
             ]);
