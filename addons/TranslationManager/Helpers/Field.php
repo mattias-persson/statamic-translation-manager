@@ -68,12 +68,20 @@ class Field
             try {
                 $fieldset = Fieldset::get($item->original->collection()->get('fieldset'))->contents();
             } catch (\Exception $e) {
+                if (!method_exists($item->original, 'collection')) {
+                    return;
+                }
+
                 $fieldset = Fieldset::get($item->original->get('fieldset'))->contents();
             }
         } else {
             try {
                 $fieldset = Fieldset::get($item->original->get('fieldset'))->contents();
             } catch (\Exception $e) {
+                if (!method_exists($item->original, 'collection')) {
+                    return;
+                }
+
                 $fieldset = Fieldset::get($item->original->collection()->get('fieldset'))->contents();
             }
         }

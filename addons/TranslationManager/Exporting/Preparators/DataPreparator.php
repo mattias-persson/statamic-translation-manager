@@ -7,6 +7,11 @@ use Statamic\Addons\TranslationManager\Helpers\Locale;
 
 class DataPreparator
 {
+    /**
+     * The field preparator class.
+     *
+     * @var FieldPreparator
+     */
     protected $fieldPreparator;
 
     /**
@@ -17,6 +22,11 @@ class DataPreparator
      */
     protected $locales;
 
+    /**
+     * Initiate the preparator.
+     *
+     * @param array $options
+     */
     public function __construct($options)
     {
         $this->fieldPreparator = new FieldPreparator;
@@ -25,6 +35,12 @@ class DataPreparator
         });
     }
 
+    /**
+     * Organize the collected data into a structure that we can export.
+     *
+     * @param Collection $data
+     * @return Collection
+     */
     public function prepare($data)
     {
         return $this->splitIntoLocales($data)->map(function ($items, $locale) {
@@ -46,6 +62,12 @@ class DataPreparator
         });
     }
 
+    /**
+     * Splits the data into chunks organized by locale.
+     *
+     * @param Collection $data
+     * @return Collection
+     */
     protected function splitIntoLocales($data)
     {
         return $this->locales->map(function ($value, $locale) use ($data) {
