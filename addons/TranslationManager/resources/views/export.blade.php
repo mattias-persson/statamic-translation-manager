@@ -29,7 +29,7 @@
                             onchange="setSelectedValue('locale')">
                             <option value="all" selected>All languages</option>
                             @foreach($locales as $locale)
-                                <option value="{{$locale}}">{{$locale}}</option>
+                                <option value="{{$locale['code']}}">{{$locale['name']}}</option>
                             @endforeach
                         </select>
 

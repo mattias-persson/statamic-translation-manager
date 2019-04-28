@@ -1,6 +1,6 @@
 <?php
 
-namespace Statamic\Addons\TranslationManager\Classes;
+namespace Statamic\Addons\TranslationManager\Exporting\Exporters\Support;
 
 /**
  * Parent class for nodes in the xliff document
@@ -9,60 +9,52 @@ class XliffNode
 {
     //Map tag names to classes
     protected static $mapNameToClass = [
-        'xliff'     => 'Statamic\Addons\TranslationManager\Classes\XliffDocument',
-        'file'      => 'Statamic\Addons\TranslationManager\Classes\XliffFile',
-        'body'      => 'Statamic\Addons\TranslationManager\Classes\XliffFileBody',
-        'header'    => 'Statamic\Addons\TranslationManager\Classes\XliffFileHeader',
-        'group'     => 'Statamic\Addons\TranslationManager\Classes\XliffUnitsGroup',
-        'trans-unit'=> 'Statamic\Addons\TranslationManager\Classes\XliffUnit',
-        'source'    => 'Statamic\Addons\TranslationManager\Classes\XliffNode',
-        'target'    => 'Statamic\Addons\TranslationManager\Classes\XliffNode',
+        'xliff'     => 'Statamic\Addons\TranslationManager\Exporting\Exporters\Support\XliffDocument',
+        'file'      => 'Statamic\Addons\TranslationManager\Exporting\Exporters\Support\XliffFile',
+        'body'      => 'Statamic\Addons\TranslationManager\Exporting\Exporters\Support\XliffFileBody',
+        'header'    => 'Statamic\Addons\TranslationManager\Exporting\Exporters\Support\XliffFileHeader',
+        'group'     => 'Statamic\Addons\TranslationManager\Exporting\Exporters\Support\XliffUnitsGroup',
+        'trans-unit'=> 'Statamic\Addons\TranslationManager\Exporting\Exporters\Support\XliffUnit',
+        'source'    => 'Statamic\Addons\TranslationManager\Exporting\Exporters\Support\XliffNode',
+        'target'    => 'Statamic\Addons\TranslationManager\Exporting\Exporters\Support\XliffNode',
     ];
-
     /**
      * Holds element's attributes
      * @var Array
      */
     protected $attributes = [];
-
     /**
      * Holds child nodes that can be repeated inside this node.
      * For example, an xliff document can have multiple "file" nodes
      * @var Array[tag-name][0..n]=XliffNode
      */
     protected $containers = [];
-
     /**
      * Indicate which child nodes are supported
      * @var Array[tag-name]=>Xliff Class
      */
     protected $supportedContainers = [];
-
     /**
      * Holds child nodes that can be presented only once inside this node.
      * For example, "trans-unit" element can have only one "source" node
      * @var Array[tag-name]=XliffNode
      */
     protected $nodes = [];
-
     /**
      * Indicate which child nodes are supported
      * @var Array[tag-name]=>Xliff Class
      */
     protected $supportedNodes = [];
-
     /**
      * Node's text, NULL if none
      * @var String|NULL
      */
     protected $textContent=null;
-
     /**
      * Node's tag name
      * @var string
      */
     protected $name = '';
-
     public function __construct($name=null)
     {
         if ($name) {
@@ -73,7 +65,6 @@ class XliffNode
             $this->containers[$name] = [];
         }
     }
-
     /**
      * @return string
      */
@@ -81,7 +72,6 @@ class XliffNode
     {
         return $this->name;
     }
-
     /**
      * @param string $name
      * @return XliffNode
@@ -92,7 +82,6 @@ class XliffNode
 
         return $this;
     }
-
     /**
      * Returns the attribute value, FALSE if attribute missing
      * @param string $name
@@ -102,7 +91,6 @@ class XliffNode
     {
         return (isset($this->attributes[$name])) ? $this->attributes[$name] : false;
     }
-
     /**
      * Sets an attribute
      * @param string $name
@@ -115,11 +103,10 @@ class XliffNode
         /*if (!(string)$value){
             throw new Exception("Attribute must be a string");
         }*/
-        $this->attributes[$name] = trim((string)$value);
+        $this->attributes[$name] = trim((string) $value);
 
         return $this;
     }
-
     /**
      * Set multiple attributes from a key=>value array
      * @param Array $attr_array
@@ -133,7 +120,6 @@ class XliffNode
 
         return $this;
     }
-
     /**
      * @return Ambigous <string, NULL>
      */
@@ -141,7 +127,6 @@ class XliffNode
     {
         return $this->textContent;
     }
-
     /**
      * @param string $textContent
      * @return XliffNode
@@ -152,7 +137,6 @@ class XliffNode
 
         return $this;
     }
-
     /**
      * Append a new node to this element
      * @param XliffNode $node - node to append
@@ -171,7 +155,6 @@ class XliffNode
 
         return $this;
     }
-
     /**
      * Allow calling $node->tag_name($new=FALSE)
      * Supports the following methods:
@@ -186,21 +169,18 @@ class XliffNode
     {
         $append   = (!empty($args) && $args[0] == true);
         $mapNames = [
-            '/^unit/' => 'trans-unit'
+            '/^unit/' => 'trans-unit',
         ];
         //re-map short names to actual tag names, for convenience
         $name = preg_replace(array_keys($mapNames), array_values($mapNames), $name);
-
         //plural ?
         if (!empty($this->supportedContainers[$name])) {
             return $this->containers[$name];
         } elseif (!empty($this->supportedContainers[$name . 's'])) {
             $pluralName= $name . 's';
-
             //Create new instance if explicitly specified by argument
             if ($append) {
                 $cls = $this->supportedContainers[$pluralName];
-
                 $this->containers[$pluralName][] = new $cls();
             }
             if (empty($this->containers[$pluralName])) {
@@ -220,7 +200,6 @@ class XliffNode
         }
         throw new \Exception(sprintf("'%s' is not supported for '%s'", $name, get_class($this)));
     }
-
     /**
      * Export this node to a DOM object
      * @param DOMDocument $doc - parent DOMDocument must be provided
@@ -247,7 +226,6 @@ class XliffNode
 
         return $element;
     }
-
     /**
      * Convert DOM element to XliffNode structure
      * @param DOMNode $element
@@ -260,7 +238,6 @@ class XliffNode
             return $element->nodeValue;
         } else {
             $name = $element->tagName;
-
             //check if tag is supported
             if (empty(self::$mapNameToClass[$element->tagName])) {
                 $cls = 'XliffNode';
@@ -271,12 +248,10 @@ class XliffNode
             }
             $node = new $cls($element->tagName);
             /* @var $node XliffNode */
-
             //Import attributes
             foreach ($element->attributes as $attrNode) {
                 $node->setAttribute($attrNode->nodeName, $attrNode->nodeValue);
             }
-
             //Continue to nested nodes
             foreach ($element->childNodes as $child) {
                 $res = self::fromDOMElement($child);
@@ -291,7 +266,6 @@ class XliffNode
         return $node;
     }
 }
-
 /**
  * Wrapper class for Xliff documents.
  * Externally, you'll want to use this class.
@@ -304,20 +278,16 @@ class XliffDocument extends XliffNode
      * uncomplete xliff Namespace
      */
     const NS = 'urn:oasis:names:tc:xliff:document:';
-
-    protected $name                = 'xliff';
+    protected $name = 'xliff';
     protected $supportedContainers = [
-        'files' => 'Statamic\Addons\TranslationManager\Classes\XliffFile',
+        'files' => 'Statamic\Addons\TranslationManager\Exporting\Exporters\Support\XliffFile',
     ];
-
     protected $version;
-
     public function __construct()
     {
         parent::__construct();
         $this->version = '1.2';
     }
-
     /**
      * Convert this XliffDocument to DOMDocument
      * @return DOMDocument
@@ -326,19 +296,15 @@ class XliffDocument extends XliffNode
     {
         // create the new document
         $doc = new \DOMDocument('1.0', 'utf-8');
-
         // create the xliff root element
         $xliff = $this->toDOMElement($doc);
-
         $xliff->setAttribute('xmlns', self::NS . $this->version);
         // add the xliff version
         $xliff->setAttribute('version', $this->version);
-
         $doc->appendChild($xliff);
 
         return $doc;
     }
-
     /**
      * Build XliffDocument from DOMDocument
      *
@@ -353,17 +319,13 @@ class XliffDocument extends XliffNode
         }
         $xlfDoc = $doc->firstChild;
         /* @var $xlfDoc DOMElement */
-
         $ver = $xlfDoc->getAttribute('version') ? $xlfDoc->getAttribute('version') : '1.2';
-
         $xliffNamespace = $xlfDoc->namespaceURI;
-
         $element = self::fromDOMElement($xlfDoc);
 
         return $element;
     }
 }
-
 /**
  * Concrete class for file tag
  *
@@ -374,11 +336,10 @@ class XliffFile extends XliffNode
 {
     protected $name           = 'file';
     protected $supportedNodes = [
-        'header'    => 'Statamic\Addons\TranslationManager\Classes\XliffFileHeader',
-        'body'      => 'Statamic\Addons\TranslationManager\Classes\XliffFileBody',
+        'header'    => 'Statamic\Addons\TranslationManager\Exporting\Exporters\Support\XliffFileHeader',
+        'body'      => 'Statamic\Addons\TranslationManager\Exporting\Exporters\Support\XliffFileBody',
     ];
 }
-
 /**
  * Concrete class for file header tag
  * @author oyagev
@@ -388,21 +349,20 @@ class XliffFileHeader extends XliffNode
 {
     protected $name           = 'header';
     protected $supportedNodes = [
-        'skl'    => 'Statamic\Addons\TranslationManager\Classes\XliffFileHeaderSKL',
+        'skl'    => 'Statamic\Addons\TranslationManager\Exporting\Exporters\Support\XliffFileHeaderSKL',
     ];
 }
 class XliffFileHeaderSKL extends XliffNode
 {
     protected $name           = 'skl';
     protected $supportedNodes = [
-        'external-file'    => 'Statamic\Addons\TranslationManager\Classes\XliffFileHeaderExternalFile',
+        'external-file'    => 'Statamic\Addons\TranslationManager\Exporting\Exporters\Support\XliffFileHeaderExternalFile',
     ];
 }
 class XliffFileHeaderExternalFile extends XliffNode
 {
     protected $name = 'external-file';
 }
-
 /**
  * Concrete class for file body tag
  *
@@ -415,11 +375,10 @@ class XliffFileBody extends XliffNode
 {
     protected $name                = 'body';
     protected $supportedContainers = [
-        'groups'            => 'Statamic\Addons\TranslationManager\Classes\XliffUnitsGroup',
-        'trans-units'       => 'Statamic\Addons\TranslationManager\Classes\XliffUnit'
+        'groups'            => 'Statamic\Addons\TranslationManager\Exporting\Exporters\Support\XliffUnitsGroup',
+        'trans-units'       => 'Statamic\Addons\TranslationManager\Exporting\Exporters\Support\XliffUnit',
     ];
 }
-
 /**
  * Concrete class for group tag
  *
@@ -430,10 +389,9 @@ class XliffUnitsGroup extends XliffNode
 {
     protected $name                = 'group';
     protected $supportedContainers = [
-        'trans-units'       => 'Statamic\Addons\TranslationManager\Classes\XliffUnit'
+        'trans-units'       => 'Statamic\Addons\TranslationManager\Exporting\Exporters\Support\XliffUnit',
     ];
 }
-
 /**
  * Concrete class for trans-unit tag
  *
@@ -444,7 +402,7 @@ class XliffUnit extends XliffNode
 {
     protected $name           = 'trans-unit';
     protected $supportedNodes = [
-        'source' => 'Statamic\Addons\TranslationManager\Classes\XliffNode',
-        'target' => 'Statamic\Addons\TranslationManager\Classes\XliffNode',
+        'source' => 'Statamic\Addons\TranslationManager\Exporting\Exporters\Support\XliffNode',
+        'target' => 'Statamic\Addons\TranslationManager\Exporting\Exporters\Support\XliffNode',
     ];
 }

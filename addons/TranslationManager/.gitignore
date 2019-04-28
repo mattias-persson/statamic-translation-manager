@@ -1,2 +1,2 @@
-exports/*
-!exports/.gitkeep
+exporting/exports/*
+!exporting/exports/.gitkeep
