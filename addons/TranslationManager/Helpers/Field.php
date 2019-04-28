@@ -86,7 +86,7 @@ class Field
         $field = explode('.', $field)[0];
 
         if (!empty($fieldset['fields'][$field])) {
-            return $fieldset['fields'][$field]['type'] ?? $fieldset['fields'][$field];
+            return $fieldset['fields'][$field] ?? $fieldset['fields'][$field];
         } elseif (!empty($fieldset['sections']['main']['fields'][$field])) {
             return $fieldset['sections']['main']['fields'][$field] ?? $fieldset['sections']['main']['fields'][$field];
         }

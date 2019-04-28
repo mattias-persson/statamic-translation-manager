@@ -15,6 +15,7 @@ class DataCollector
     protected $collectors = [
         'page' => PageCollector::class,
         'global' => GlobalCollector::class,
+        'collection' => CollectionCollector::class,
     ];
 
     public function __construct($options)
@@ -34,7 +35,18 @@ class DataCollector
             if ($this->options[$key] === 'all') {
                 $data = $data->merge(app($collector)->all());
             } else {
-                $data->push(app($collector)->find($this->options[$key]));
+                $item = app($collector)->find($this->options[$key]);
+
+                // If the returned value is a collection, for example
+                // multiple entries in a selected collection set, add
+                // all of them to the data. Otherwise, just push the one.
+                if (class_basename($item) === 'EntryCollection') {
+                    foreach ($item as $object) {
+                        $data = $data->push($object);
+                    }
+                } else {
+                    $data = $data->push($item);
+                }
             }
         }
 
