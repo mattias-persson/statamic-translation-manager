@@ -7,12 +7,19 @@ use Statamic\Addons\TranslationManager\Exporting\Exporters\Support\XliffDocument
 
 class Xliff
 {
+    protected $config;
+
     /**
      * The Xliff object used to assemble the result file.
      *
      * @var XliffDocument
      */
     protected $xliff;
+
+    public function __construct($config)
+    {
+        $this->config = $config;
+    }
 
     /**
      * Creates the Xliff file.
@@ -26,7 +33,15 @@ class Xliff
         $this->xliff = new XliffDocument();
 
         foreach ($data as $item) {
-            $query = '';
+            if (!empty($this->config['page_url'])) {
+                $href = $this->config['page_url'].'/'.$item['meta']['uri'];
+            } else {
+                $href = $item['meta']['url'];
+            }
+
+            if (!empty($this->config['page_query_string'])) {
+                $href .= $this->config['page_query_string'];
+            }
 
             $this->xliff
                 ->file(true)
@@ -39,7 +54,7 @@ class Xliff
                 ->header(true)
                 ->skl(true)
                 ->{'external-file'}(true)
-                ->setAttribute('href', $item['meta']['url'] . $query);
+                ->setAttribute('href', $href);
 
             $this->xliff->file()->body(true);
 

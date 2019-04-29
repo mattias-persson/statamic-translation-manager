@@ -13,7 +13,7 @@ class TaxonomyCollector implements Collector
      *
      * @return Collection
      */
-    public function all()
+    public function all($config)
     {
         $taxonomies = Taxonomy::handles();
         $terms = collect();

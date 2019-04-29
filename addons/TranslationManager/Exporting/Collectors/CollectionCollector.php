@@ -13,12 +13,17 @@ class CollectionCollector implements Collector
      *
      * @return Collection
      */
-    public function all()
+    public function all($config)
     {
         $collections = Collection::handles();
         $entries = collect();
+        $exclude = !empty($config['exclude_collection_slugs']) ? explode(',', $config['exclude_collection_slugs']) : null;
 
         foreach ($collections as $handle) {
+            if ($exclude && in_array($handle, $exclude)) {
+                continue;
+            }
+
             $items = Entry::whereCollection($handle);
 
             foreach ($items as $entry) {

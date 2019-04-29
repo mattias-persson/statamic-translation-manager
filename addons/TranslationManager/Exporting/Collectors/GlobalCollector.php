@@ -12,7 +12,7 @@ class GlobalCollector implements Collector
      *
      * @return Collection
      */
-    public function all()
+    public function all($config)
     {
         return GlobalSet::all();
     }

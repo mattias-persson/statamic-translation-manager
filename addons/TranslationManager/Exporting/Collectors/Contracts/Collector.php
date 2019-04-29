@@ -4,7 +4,7 @@ namespace Statamic\Addons\TranslationManager\Exporting\Collectors\Contracts;
 
 interface Collector
 {
-    public function all();
+    public function all($config);
 
     public function find($handle);
 }

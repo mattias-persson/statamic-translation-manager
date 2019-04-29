@@ -14,7 +14,7 @@ class Exporter
     public function __construct($config, $options)
     {
         $this->config = $this->parseConfig($config);
-        $this->dataCollector = new DataCollector($options);
+        $this->dataCollector = new DataCollector($config, $options);
         $this->dataPreparator = new DataPreparator($options);
     }
 
@@ -23,12 +23,12 @@ class Exporter
         // Clear out the result directory.
         $this->clearExportsDirectory();
 
-        $data = $this->dataCollector->collect();
+        $data = $this->dataCollector->collect($this->config);
         $data = $this->dataPreparator->prepare($data);
 
         $files = [];
         foreach ($data as $locale => $data) {
-            $files[] = (new Xliff)->create($locale, $data);
+            $files[] = (new Xliff($this->config))->create($locale, $data);
         }
 
         if (count($files) > 1) {

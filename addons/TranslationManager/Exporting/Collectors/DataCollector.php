@@ -19,8 +19,9 @@ class DataCollector
         'taxonomy' => TaxonomyCollector::class,
     ];
 
-    public function __construct($options)
+    public function __construct($config, $options)
     {
+        $this->config = $config;
         $this->options = $options;
     }
 
@@ -39,7 +40,7 @@ class DataCollector
             }
 
             if ($this->options[$key] === 'all') {
-                $data = $data->merge(app($collector)->all());
+                $data = $data->merge(app($collector)->all($this->config));
             } else {
                 $item = app($collector)->find($this->options[$key]);
 

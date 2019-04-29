@@ -51,6 +51,7 @@ class DataPreparator
                         'id' => $item->id(),
                         'type' => class_basename($item->original),
                         'url' => URL::prependSiteUrl($item->original->uri(), $item->locale()),
+                        'uri' => $item->locale().$item->original->uri(),
                         'source-language' => Locale::default(),
                         'target-language' => $locale,
                     ],
