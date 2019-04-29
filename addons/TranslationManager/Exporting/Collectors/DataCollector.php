@@ -29,6 +29,11 @@ class DataCollector
         $data = collect();
 
         foreach ($this->collectors as $key => $collector) {
+            // "Export everything" overrides any specific selections.
+            if ($this->options['content'] === 'everything') {
+                $this->options[$key] = 'all';
+            }
+
             if ($this->options[$key] === 'no') {
                 continue;
             }
