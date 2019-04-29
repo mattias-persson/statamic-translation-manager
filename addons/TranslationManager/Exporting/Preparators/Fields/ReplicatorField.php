@@ -2,25 +2,8 @@
 
 namespace Statamic\Addons\TranslationManager\Exporting\Preparators\Fields;
 
-class ReplicatorField
+class ReplicatorField extends Field
 {
-    /**
-     * The processed fields to which we want to add the data.
-     *
-     * @var array
-     */
-    protected $fields;
-
-    /**
-     * Apply the fields to the field mapper.
-     *
-     * @param array $fields
-     */
-    public function __construct($fields)
-    {
-        $this->fields = $fields;
-    }
-
     /**
      * Parse and add the current field to the list of fields.
      *
@@ -29,7 +12,7 @@ class ReplicatorField
      */
     public function map($data)
     {
-        foreach ($data['localized_value'] as $rowIndex => $set) {
+        foreach ($data['original_value'] as $rowIndex => $set) {
             $setName = $set['type'];
             unset($set['type']);
 
@@ -41,18 +24,24 @@ class ReplicatorField
                     $this->fields[$key] = [
                         'type' => $data['field_type'],
                         'name' => $key.':'.$data['field_type'],
-                        'original' => $data['original_value'][$rowIndex][$field],
-                        'localized' => $value,
+                        'original' => $value,
+                        'localized' => $data['localized_value'][$rowIndex][$field] ?? '',
                     ];
                 } elseif (is_array($value)) {
                     $itemIndex = 0;
                     foreach ($value as $string) {
                         $key = $data['field_name'].'.'.$setName.'.'.$field.'.'.$itemIndex;
+                        try {
+                            $localized = collect($data['localized_value'][$rowIndex][$field])->values()[$itemIndex];
+                        } catch (\Exception $e) {
+                            $localized = '';
+                        }
+
                         $this->fields[$key] = [
                             'type' => $data['field_type'],
                             'name' => $key.':'.$data['field_type'],
-                            'original' => collect($data['original_value'][$rowIndex][$field])->values()[$itemIndex],
-                            'localized' => $string,
+                            'original' => $string,
+                            'localized' => $localized,
                         ];
 
                         $itemIndex++;

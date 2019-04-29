@@ -4,8 +4,9 @@ namespace Statamic\Addons\TranslationManager\Exporting\Collectors;
 
 use Statamic\API\Term;
 use Statamic\API\Taxonomy;
+use Statamic\Addons\TranslationManager\Exporting\Collectors\Contracts\Collector;
 
-class TaxonomyCollector extends BaseCollector
+class TaxonomyCollector implements Collector
 {
     /**
      * Retrieves all terms in all taxonomies.

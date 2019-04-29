@@ -3,8 +3,9 @@
 namespace Statamic\Addons\TranslationManager\Exporting\Collectors;
 
 use Statamic\API\GlobalSet;
+use Statamic\Addons\TranslationManager\Exporting\Collectors\Contracts\Collector;
 
-class GlobalCollector extends BaseCollector
+class GlobalCollector implements Collector
 {
     /**
      * Returns all global sets.

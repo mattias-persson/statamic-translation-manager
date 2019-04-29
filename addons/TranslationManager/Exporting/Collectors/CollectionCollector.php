@@ -4,8 +4,9 @@ namespace Statamic\Addons\TranslationManager\Exporting\Collectors;
 
 use Statamic\API\Entry;
 use Statamic\API\Collection;
+use Statamic\Addons\TranslationManager\Exporting\Collectors\Contracts\Collector;
 
-class CollectionCollector extends BaseCollector
+class CollectionCollector implements Collector
 {
     /**
      * Retrieves all entries in all collections.

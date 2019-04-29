@@ -2,6 +2,8 @@
 
 namespace Statamic\Addons\TranslationManager\Exporting;
 
+use Statamic\Addons\TranslationManager\Helpers\Config;
+
 class FileZipper
 {
     /**
@@ -12,7 +14,7 @@ class FileZipper
      */
     public static function zip($files)
     {
-        $zipname = dirname(__FILE__) . '/exports/translations-'.date('Y-m-d-His').'.zip';
+        $zipname = Config::get('export_path').'translations-'.date('Y-m-d-His').'.zip';
 
         $zip = new \ZipArchive;
         $zip->open($zipname, \ZipArchive::CREATE);

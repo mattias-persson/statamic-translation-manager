@@ -2,6 +2,7 @@
 
 namespace Statamic\Addons\TranslationManager\Exporting\Exporters;
 
+use Statamic\Addons\TranslationManager\Helpers\Config;
 use Statamic\Addons\TranslationManager\Exporting\Exporters\Support\XliffDocument;
 
 class Xliff
@@ -51,7 +52,7 @@ class Xliff
             }
         }
 
-        $filepath = dirname(__FILE__).'/../exports/'.$locale.'.xlf';
+        $filepath = Config::get('export_path').$locale.'.xlf';
         file_put_contents($filepath, $this->xliff->toDOM()->saveXML());
 
         return $filepath;

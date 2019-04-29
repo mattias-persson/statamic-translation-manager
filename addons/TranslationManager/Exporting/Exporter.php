@@ -2,6 +2,7 @@
 
 namespace Statamic\Addons\TranslationManager\Exporting;
 
+use Statamic\Addons\TranslationManager\Helpers\Config;
 use Statamic\Addons\TranslationManager\Exporting\Exporters\Xliff;
 use Statamic\Addons\TranslationManager\Exporting\Collectors\DataCollector;
 use Statamic\Addons\TranslationManager\Exporting\Preparators\DataPreparator;
@@ -10,16 +11,8 @@ class Exporter
 {
     protected $config;
 
-    /**
-     * The path where the exported files will be placed before download.
-     *
-     * @var string
-     */
-    protected $exportPath;
-
     public function __construct($config, $options)
     {
-        $this->exportPath = dirname(__FILE__) . '/exports/';
         $this->config = $this->parseConfig($config);
         $this->dataCollector = new DataCollector($options);
         $this->dataPreparator = new DataPreparator($options);
@@ -66,12 +59,13 @@ class Exporter
      */
     protected function clearExportsDirectory()
     {
-        $files       = scandir($this->exportPath);
+        $exportPath = Config::get('export_path');
+        $files = scandir($exportPath);
         $filesToKeep = ['.', '..', '.DS_Store', '.gitkeep'];
 
         foreach ($files as $file) {
             if (!in_array($file, $filesToKeep)) {
-                unlink($this->exportPath . $file);
+                unlink($exportPath . $file);
             }
         }
     }

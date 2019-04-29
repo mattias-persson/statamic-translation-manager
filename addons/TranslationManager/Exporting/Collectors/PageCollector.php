@@ -3,8 +3,9 @@
 namespace Statamic\Addons\TranslationManager\Exporting\Collectors;
 
 use Statamic\API\Page;
+use Statamic\Addons\TranslationManager\Exporting\Collectors\Contracts\Collector;
 
-class PageCollector extends BaseCollector
+class PageCollector implements Collector
 {
     public function all()
     {
