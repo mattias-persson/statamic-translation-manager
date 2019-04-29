@@ -6,8 +6,20 @@ use Statamic\Addons\TranslationManager\Exporting\Exporters\Support\XliffDocument
 
 class Xliff
 {
+    /**
+     * The Xliff object used to assemble the result file.
+     *
+     * @var XliffDocument
+     */
     protected $xliff;
 
+    /**
+     * Creates the Xliff file.
+     *
+     * @param string $locale
+     * @param array $data
+     * @return string
+     */
     public function create($locale, $data)
     {
         $this->xliff = new XliffDocument();
@@ -45,6 +57,14 @@ class Xliff
         return $filepath;
     }
 
+    /**
+     * Adds a translation unit (a field) to the file.
+     * A unit consists of a target (the original value) and
+     * a source (the translated value).
+     *
+     * @param array $field
+     * @return void
+     */
     protected function addUnit($field)
     {
         // Apply the original value.
