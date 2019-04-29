@@ -33,7 +33,16 @@ class Exporter
         $data = $this->dataCollector->collect();
         $data = $this->dataPreparator->prepare($data);
 
-        return (new Xliff)->create($data);
+        $files = [];
+        foreach ($data as $locale => $data) {
+            $files[] = (new Xliff)->create($locale, $data);
+        }
+
+        if (count($files) > 1) {
+            return FileZipper::zip($files);
+        }
+
+        return $files[0];
     }
 
     protected function parseConfig($config)
