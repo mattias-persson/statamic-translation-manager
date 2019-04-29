@@ -16,6 +16,7 @@ class DataCollector
         'page' => PageCollector::class,
         'global' => GlobalCollector::class,
         'collection' => CollectionCollector::class,
+        'taxonomy' => TaxonomyCollector::class,
     ];
 
     public function __construct($options)
@@ -40,7 +41,7 @@ class DataCollector
                 // If the returned value is a collection, for example
                 // multiple entries in a selected collection set, add
                 // all of them to the data. Otherwise, just push the one.
-                if (class_basename($item) === 'EntryCollection') {
+                if (in_array(class_basename($item), ['EntryCollection', 'TermCollection'])) {
                     foreach ($item as $object) {
                         $data = $data->push($object);
                     }

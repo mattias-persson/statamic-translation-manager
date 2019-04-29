@@ -70,6 +70,22 @@ class Field
             } catch (\Exception $e) {
                 $fieldset = Fieldset::get($item->original->get('fieldset'))->contents();
             }
+        } elseif (in_array(class_basename($item->original), ['Term'])) {
+            try {
+                $fieldsetName = $item->original->taxonomy()->get('fieldset');
+
+                if (!$fieldsetName) {
+                    if (is_string($item->get($field))) {
+                        return ['type' => 'text', 'localizable' => true];
+                    }
+                }
+
+                $fieldset = Fieldset::get($fieldsetName)->contents();
+            } catch (\Exception $e) {
+                if (is_string($item->get($field))) {
+                    return ['type' => 'text', 'localizable' => true];
+                }
+            }
         } else {
             try {
                 $fieldset = Fieldset::get($item->original->get('fieldset'))->contents();
