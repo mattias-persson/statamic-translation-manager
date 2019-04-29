@@ -27,7 +27,7 @@ class TranslationManagerListener extends Listener
         $translations = Nav::item('Translations')->route('translationmanager.index')->icon('globe');
 
         $translations->add(function ($item) {
-            $item->add(Nav::item('Import')->route('translationmanager.import'));
+            #$item->add(Nav::item('Import')->route('translationmanager.import'));
             $item->add(Nav::item('Export')->route('translationmanager.export'));
         });
 
