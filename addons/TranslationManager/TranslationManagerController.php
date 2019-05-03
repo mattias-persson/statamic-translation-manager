@@ -69,7 +69,6 @@ class TranslationManagerController extends Controller
 
         $importer->import($parser->parse());
 
-
         return back()->with('success', 'The file was imported!');
     }
 
