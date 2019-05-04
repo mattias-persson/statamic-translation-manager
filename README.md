@@ -2,7 +2,7 @@
 A Statamic addon for importing or exporting translatable content to the standardized .xlf/.xliff format.
 
 ## Instructions
-For instructions and documentation, please refer to [documentation.md](DOCUMENTATION.md).
+For instructions and documentation, please refer to [documentation.md](DOCUMENTATION.md) or to the [Statamic Marketplace](https://statamic.com/marketplace/addons/translation-manager).
 
 ## Description
 This addon lets you export Pages, Globals, Collections and Taxonomies to all available languages or to the one you choose. 
