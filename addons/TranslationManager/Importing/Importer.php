@@ -36,6 +36,7 @@ class Importer
                         break;
 
                     case 'table':
+                        continue;
                         $field = explode('.', $translation['field_name']);
                         $translations[$field[0]] = (new TableField($item))->map($translation);
                         break;
