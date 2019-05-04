@@ -3,6 +3,9 @@
 namespace Statamic\Addons\TranslationManager\Importing;
 
 use Statamic\API\Page;
+use Statamic\API\Term;
+use Statamic\API\Entry;
+use Statamic\API\GlobalSet;
 use Statamic\Addons\TranslationManager\Importing\Preparators\Fields\ArrayField;
 use Statamic\Addons\TranslationManager\Importing\Preparators\Fields\TableField;
 
@@ -37,12 +40,16 @@ class Importer
                         $translations[$field[0]] = (new TableField($item))->map($translation);
                         break;
 
+                    // This includes:
+                    // - Regular text fields
+                    // - Bard
+                    // - Textareas
+                    // - Markdown
                     default:
                         $translations[$translation['field_name']] = $translation['target'];
                         break;
                 }
             }
-
 
             foreach ($translations as $field => $value) {
                 $item['original']
@@ -62,10 +69,22 @@ class Importer
      */
     protected function getOriginal($item)
     {
-        if (strtolower($item['meta_data']['type']) === 'page') {
-            return Page::find($item['meta_data']['id']);
-        } else {
-            return Entry::find($item['meta_data']['id']);
+        switch (strtolower($item['meta_data']['type'])) {
+            case 'page':
+                return Page::find($item['meta_data']['id']);
+                break;
+
+            case 'entry':
+                return Entry::find($item['meta_data']['id']);
+                break;
+
+            case 'term':
+                return Term::find($item['meta_data']['id']);
+                break;
+
+            case 'globalset':
+                return GlobalSet::find($item['meta_data']['id']);
+                break;
         }
     }
 }

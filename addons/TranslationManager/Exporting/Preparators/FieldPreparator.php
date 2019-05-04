@@ -77,7 +77,10 @@ class FieldPreparator
                 $this->fields = (new ArrayField($this->fields))->map($fieldData);
                 break;
 
+            // Not properly implemented yet.
             case 'table':
+                continue;
+
                 $this->fields = (new TableField($this->fields))->map($fieldData);
                 break;
 

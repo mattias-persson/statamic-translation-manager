@@ -64,6 +64,35 @@ class XliffParser
      */
     public function getTranslations($item)
     {
+        $itemType = strtolower((string) $item->attributes()->original);
+
+        try {
+            return $this->parseTranslationsMethod1($item);
+        } catch (\Exception $e) {
+            try {
+                return $this->parseTranslationsMethod2($item);
+            } catch (\Exception $e) {
+                return [];
+            }
+        }
+
+        return [];
+        if (starts_with($itemType, 'page:') || starts_with($itemType, 'globalset:')) {
+            return $this->parseTranslationsMethod1($item);
+        } else {
+            return $this->parseTranslationsMethod2($item);
+        }
+    }
+
+    /**
+     * The first method for parsing translations. Sometimes this fails for some reason, making it
+     * necessary for another method to try as an alternative.
+     *
+     * @param object $item
+     * @return array
+     */
+    protected function parseTranslationsMethod1($item)
+    {
         $translations = [];
 
         foreach (array_values((array) $item->body)[0] as $unit) {
@@ -75,6 +104,36 @@ class XliffParser
                 'source' => (string) $unit->source,
                 'target' => (string) $unit->target,
             ];
+        }
+
+        return $translations;
+    }
+
+    /**
+     * The second method for parsing translations. Used when the first one fails.
+     * Gotta love XML parsing...
+     *
+     * @param object $item
+     * @return array
+     */
+    protected function parseTranslationsMethod2($item)
+    {
+        $translations = [];
+        $units = array_values((array) $item->body[0]);
+        $i = 0;
+
+        while ($i < count($units)) {
+            $unit = $units[$i];
+            $metaData = explode(':', (string) $unit->attributes()->id);
+
+            $translations[] = [
+                'field_name' => $metaData[0],
+                'field_type' => $metaData[1],
+                'source' => (string) $unit->source,
+                'target' => (string) $unit->target,
+            ];
+
+            $i++;
         }
 
         return $translations;
