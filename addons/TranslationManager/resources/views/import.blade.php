@@ -16,11 +16,10 @@
                     <label class="block">File</label>
 
                     <small class="help-block">
-                        <p>Should be a .xlf or .xliff file.</p>
+                        <p>Must be a .xlf or .xliff file.</p>
                     </small>
 
                     <input type="file" name="file">
-
                 </div>
             </div>
 

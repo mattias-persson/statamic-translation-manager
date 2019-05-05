@@ -16,6 +16,12 @@ class TranslationManagerListener extends Listener
         'cp.nav.created' => 'addNavItems',
     ];
 
+    /**
+     * Add the navigation links to the CP.
+     *
+     * @param oject $nav
+     * @return void
+     */
     public function addNavItems($nav)
     {
         $translations = Nav::item('Translations')->route('translationmanager.index')->icon('globe');
