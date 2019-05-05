@@ -1,8 +1,8 @@
 # statamic-translation-manager
 A Statamic addon for importing or exporting translatable content to the standardized .xlf/.xliff format.
 
-<img src="./addons/TranslationManager/resources/assets/img/export.png" alt="Export translations" width="48%" style="float: left; margin-right: 0.5%;" />
-<img src="./addons/TranslationManager/resources/assets/img/import.png" alt="Import translations" width="48%" style="float: right; margin-left: 0.5%;" />
+<img src="./addons/TranslationManager/resources/assets/img/export.png" alt="Export translations" width="47%" style="float: left; margin-right: 0.5%;" />
+<img src="./addons/TranslationManager/resources/assets/img/import.png" alt="Import translations" width="47%" style="float: right; margin-left: 0.5%;" />
 <p style="clear: both"></p>
 
 ## Instructions
