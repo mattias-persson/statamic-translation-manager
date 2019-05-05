@@ -1,5 +1,5 @@
 name: TranslationManager
-version: '2.0'
+version: '2.0.1'
 description: 'Import and export translatable content'
 url: 'https://statamic.com/marketplace/addons/translation-manager'
 developer: 'Mattias Persson'

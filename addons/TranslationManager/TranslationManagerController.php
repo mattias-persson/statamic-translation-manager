@@ -60,14 +60,23 @@ class TranslationManagerController extends Controller
      */
     public function postImport(Request $request, Importer $importer)
     {
-        // TODO: Validate file.
-        #return back()->withErrors(['file' => 'The file must be of the type .xlf or .xliff.']);
+        // The built in file validation doesn't work for some reason, so we have to manually
+        // validate the file type.
+        if (!in_array($request->file->getClientOriginalExtension(), ['xlf', 'xliff'])) {
+            return back()->withErrors(['file' => 'The file must be of the type .xlf or .xliff.']);
+        }
 
-        #$this->validate($request, ['file' => 'required|mimes:xml,xlf,xliff,text/xml']);
+        try {
+            $data = (new XliffParser(file_get_contents($request->file)))->parse();
+        } catch (\Exception $e) {
+            return $this->errorResponse($e, 'Unable to read the file.');
+        }
 
-        $parser = new XliffParser(file_get_contents($request->file));
-
-        $importer->import($parser->parse());
+        try {
+            $importer->import($data);
+        } catch (\Exception $e) {
+            return $this->errorResponse($e, 'Unable to import the translations.');
+        }
 
         return back()->with('success', 'The file was imported!');
     }
@@ -83,5 +92,15 @@ class TranslationManagerController extends Controller
         $exporter = new Exporter($this->getConfig(), $request->all());
 
         return response()->download($exporter->run());
+    }
+
+    protected function errorResponse($e, $message)
+    {
+        $message .= ' Please visit https://github.com/mattias-persson/statamic-translation-manager/issues/new 
+        and open an issue with the following error message included: "'.$e->getMessage().'".';
+
+        return back()->withErrors([
+            'file' => $message,
+        ]);
     }
 }
