@@ -220,8 +220,17 @@ class XliffNode
             $element->appendChild($node->toDOMElement($doc));
         }
         if ($text = $this->getTextContent()) {
-            $textNode = $doc->createTextNode($text);
-            $element->appendChild($textNode);
+            if (is_array($text)) {
+                foreach ($text as $node) {
+                    if (! empty($node['type']) && $node['type'] === 'text' && ! empty($node['text'])) {
+                        $textNode = $doc->createTextNode($node['text']);
+                        $element->appendChild($textNode);
+                    }
+                }
+            } else {
+                $textNode = $doc->createTextNode($text);
+                $element->appendChild($textNode);
+            }
         }
 
         return $element;
