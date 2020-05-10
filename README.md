@@ -22,7 +22,7 @@ The exported file can then be modified by a translation agency or yourself, and 
 | List          | ✅         | ✅         |
 | Array         | ✅         | ✅         |
 | Tags          | ✅         | ✅         |
-| Replicator    | ✅         |            |
+| Replicator    | ✅         | ✅         |
 | Table         |            |            |
 
 More field types will be added. Feel free to open an issue if you're missing a specific type.
