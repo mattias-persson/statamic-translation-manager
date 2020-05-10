@@ -5,6 +5,8 @@ A Statamic addon for importing or exporting translatable content to the standard
 | --------- | --------- |
 | <img src="./addons/TranslationManager/resources/assets/img/export.png" alt="Export translations" /> | <img src="./addons/TranslationManager/resources/assets/img/import.png" alt="Import translations" /> |
 
+**:tada: The addon now supports nested data structures!**
+
 ## Instructions
 For instructions and documentation, please refer to [documentation.md](DOCUMENTATION.md) or to the [Statamic Marketplace](https://statamic.com/marketplace/addons/translation-manager).
 
