@@ -2,12 +2,10 @@
 
 namespace Statamic\Addons\TranslationManager\Importing;
 
-use Statamic\API\Page;
-use Statamic\API\Term;
 use Statamic\API\Entry;
 use Statamic\API\GlobalSet;
-use Statamic\Addons\TranslationManager\Importing\Preparators\Fields\ArrayField;
-use Statamic\Addons\TranslationManager\Importing\Preparators\Fields\TableField;
+use Statamic\API\Page;
+use Statamic\API\Term;
 
 class Importer
 {
@@ -25,34 +23,17 @@ class Importer
             }
 
             $translations = [];
-
             foreach ($item['translations'] as $translation) {
-                switch ($translation['field_type']) {
-                    case 'list':
-                    case 'array':
-                    case 'tags':
-                        $field = explode('.', $translation['field_name']);
-                        $translations[$field[0]] = (new ArrayField($item))->map($translation);
-                        break;
-
-                    case 'table':
-                        continue;
-                        $field = explode('.', $translation['field_name']);
-                        $translations[$field[0]] = (new TableField($item))->map($translation);
-                        break;
-
-                    // This includes:
-                    // - Regular text fields
-                    // - Bard
-                    // - Textareas
-                    // - Markdown
-                    default:
-                        $translations[$translation['field_name']] = $translation['target'];
-                        break;
-                }
+                $translations[$translation['field_name']] = $translation['target'];
             }
 
-            foreach ($translations as $field => $value) {
+            // Convert the dot notations to a multilevel array.
+            $result = [];
+            foreach ($translations as $key => $value) {
+                $this->toArray($result, $key, $value);
+            }
+
+            foreach ($result as $field => $value) {
                 $item['original']
                     ->in($item['meta_data']['target_language'])
                     ->set($field, $value);
@@ -60,6 +41,40 @@ class Importer
 
             $item['original']->save();
         }
+    }
+
+    /**
+     * Converts the dot notation keys to nested arrays.
+     *
+     * @param array $array
+     * @param string $key
+     * @param mixed $value
+     * @return array
+     */
+    protected function toArray(&$array, $key, $value)
+    {
+        if (is_null($key)) {
+            return $array = $value;
+        }
+
+        $keys = explode('.', $key);
+
+        while (count($keys) > 1) {
+            $key = array_shift($keys);
+
+            // If the key doesn't exist at this depth, we will just create an empty array
+            // to hold the next value, allowing us to create the arrays to hold final
+            // values at the correct depth. Then we'll keep digging into the array.
+            if (! isset($array[$key]) || ! is_array($array[$key])) {
+                $array[$key] = [];
+            }
+
+            $array = &$array[$key];
+        }
+
+        $array[array_shift($keys)] = $value;
+
+        return $array;
     }
 
     /**

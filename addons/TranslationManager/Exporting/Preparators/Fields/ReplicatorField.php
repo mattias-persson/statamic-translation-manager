@@ -2,6 +2,10 @@
 
 namespace Statamic\Addons\TranslationManager\Exporting\Preparators\Fields;
 
+use Illuminate\Support\Str;
+use RecursiveArrayIterator;
+use RecursiveIteratorIterator;
+
 class ReplicatorField extends Field
 {
     /**
@@ -12,44 +16,62 @@ class ReplicatorField extends Field
      */
     public function map($data)
     {
-        foreach ($data['original_value'] as $rowIndex => $set) {
-            $setName = $set['type'];
-            unset($set['type']);
+        $fields = $this->flatten($data['original_value'], $data['field_name']);
 
-            foreach ($set as $field => $value) {
-                $key = $data['field_name'].'.'.$setName.'.'.$field;
+        if (empty($fields)) {
+            return [];
+        }
 
-                // Text fields within the replicator.
-                if (is_string($value)) {
-                    $this->fields[$key] = [
-                        'type' => $data['field_type'],
-                        'name' => $key.':'.$data['field_type'],
-                        'original' => $value,
-                        'localized' => $data['localized_value'][$rowIndex][$field] ?? '',
-                    ];
-                } elseif (is_array($value)) {
-                    $itemIndex = 0;
-                    foreach ($value as $string) {
-                        $key = $data['field_name'].'.'.$setName.'.'.$field.'.'.$itemIndex;
-                        try {
-                            $localized = collect($data['localized_value'][$rowIndex][$field])->values()[$itemIndex];
-                        } catch (\Exception $e) {
-                            $localized = '';
-                        }
+        $localizedFields = null;
 
-                        $this->fields[$key] = [
-                            'type' => $data['field_type'],
-                            'name' => $key.':'.$data['field_type'],
-                            'original' => $string,
-                            'localized' => $localized,
-                        ];
+        if (! empty($data['localized_value'])) {
+            $localizedFields = $this->flatten($data['localized_value'], $data['field_name']);
+        }
 
-                        $itemIndex++;
-                    }
-                }
+        foreach ($fields as $path => $value) {
+            $localized = $localizedFields[$path] ?? '';
+
+            if (Str::endsWith($path, '.type')) {
+                $localized = $value;
             }
+
+            $this->fields[$path] = [
+                'type' => $data['field_type'],
+                'name' => $path.':'.$data['field_type'],
+                'original' => $value,
+                'localized' => $localized,
+            ];
         }
 
         return $this->fields;
+    }
+
+    /**
+     * Flattens a nested array into a single level array with dot notation keys.
+     *
+     * @param array $array
+     * @param string|null $prefix
+     * @return array
+     */
+    protected function flatten($array, $prefix = null)
+    {
+        $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($array));
+        $result = [];
+
+        if ($prefix) {
+            $prefix .= '.';
+        }
+
+        foreach ($iterator as $value) {
+            $keys = [];
+
+            foreach (range(0, $iterator->getDepth()) as $depth) {
+                $keys[] = $iterator->getSubIterator($depth)->key();
+            }
+
+            $result[ $prefix.join('.', $keys) ] = $value;
+        }
+
+        return $result;
     }
 }

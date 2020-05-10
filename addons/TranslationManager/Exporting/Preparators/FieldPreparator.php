@@ -2,12 +2,12 @@
 
 namespace Statamic\Addons\TranslationManager\Exporting\Preparators;
 
+use Statamic\Addons\TranslationManager\Exporting\Preparators\Fields\ArrayField;
+use Statamic\Addons\TranslationManager\Exporting\Preparators\Fields\ReplicatorField;
+use Statamic\Addons\TranslationManager\Exporting\Preparators\Fields\StringField;
+use Statamic\Addons\TranslationManager\Exporting\Preparators\Fields\TableField;
 use Statamic\Addons\TranslationManager\Helpers\Field;
 use Statamic\Addons\TranslationManager\Helpers\Locale;
-use Statamic\Addons\TranslationManager\Exporting\Preparators\Fields\ArrayField;
-use Statamic\Addons\TranslationManager\Exporting\Preparators\Fields\TableField;
-use Statamic\Addons\TranslationManager\Exporting\Preparators\Fields\StringField;
-use Statamic\Addons\TranslationManager\Exporting\Preparators\Fields\ReplicatorField;
 
 class FieldPreparator
 {
