@@ -24,6 +24,12 @@ class Importer
 
             $translations = [];
             foreach ($item['translations'] as $translation) {
+                // If the field hasn't been translated and the original language
+                // has a value, apply the original one to prevent blank fields.
+                if (empty($translation['target']) && ! empty($translation['source'])) {
+                    $translation['target'] = $translation['source'];
+                }
+
                 $translations[$translation['field_name']] = $translation['target'];
             }
 
