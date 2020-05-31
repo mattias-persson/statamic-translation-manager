@@ -15,19 +15,7 @@ This addon lets you export Pages, Globals, Collections and Taxonomies to all ava
 The exported file can then be modified by a translation agency or yourself, and imported again to apply the changes to your site.
 
 ## Supported field types
-| Field type    | Exporting  | Importing  |
-| ------------- |:----------:|:----------:
-| Text          | ✅         | ✅         |
-| Markdown      | ✅         | ✅         |
-| Textarea      | ✅         | ✅         |
-| Bard          | ✅         | ✅         |
-| List          | ✅         | ✅         |
-| Array         | ✅         | ✅         |
-| Tags          | ✅         | ✅         |
-| Replicator    | ✅         | ✅         |
-| Table         | ✅         | ✅         |
-
-More field types will be added. Feel free to open an issue if you're missing a specific type.
+Most field types are now supported out of the box. If you're missing something feel free to open an issue or PR. I'd be happy to take a look at it!
 
 ## Support me
-If this addon made your life a bit easier, consider buying me lunch once or twice a month [through Patreon](https://www.patreon.com/mattiaspersson). All support helps me spend more time on packages like this and also comes with a few benefits 🎁 Thanks!
+If this addon made your life a bit easier, consider buying me lunch once or twice a month by sponsoring me or [through Patreon](https://www.patreon.com/mattiaspersson). All support helps me spend more time on packages like this and also comes with a few benefits 🎁 Thanks!
