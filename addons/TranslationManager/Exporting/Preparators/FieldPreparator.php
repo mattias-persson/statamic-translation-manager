@@ -2,12 +2,11 @@
 
 namespace Statamic\Addons\TranslationManager\Exporting\Preparators;
 
+use Statamic\Addons\TranslationManager\Exporting\Preparators\Fields\ArrayField;
+use Statamic\Addons\TranslationManager\Exporting\Preparators\Fields\ReplicatorField;
+use Statamic\Addons\TranslationManager\Exporting\Preparators\Fields\StringField;
 use Statamic\Addons\TranslationManager\Helpers\Field;
 use Statamic\Addons\TranslationManager\Helpers\Locale;
-use Statamic\Addons\TranslationManager\Exporting\Preparators\Fields\ArrayField;
-use Statamic\Addons\TranslationManager\Exporting\Preparators\Fields\TableField;
-use Statamic\Addons\TranslationManager\Exporting\Preparators\Fields\StringField;
-use Statamic\Addons\TranslationManager\Exporting\Preparators\Fields\ReplicatorField;
 
 class FieldPreparator
 {
@@ -77,13 +76,7 @@ class FieldPreparator
                 $this->fields = (new ArrayField($this->fields))->map($fieldData);
                 break;
 
-            // Not properly implemented yet.
             case 'table':
-                continue;
-
-                $this->fields = (new TableField($this->fields))->map($fieldData);
-                break;
-
             case 'replicator':
                 $this->fields = (new ReplicatorField($this->fields))->map($fieldData);
                 break;

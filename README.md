@@ -7,6 +7,8 @@ A Statamic addon for importing or exporting translatable content to the standard
   
 **:warning: Please note that this addon can't handle deeply nested data structures. If you require that level of complexity, the export or import might not work as expected.**
 
+**:tada: The addon now supports nested data structures!**
+
 ## Instructions
 For instructions and documentation, please refer to [documentation.md](DOCUMENTATION.md) or to the [Statamic Marketplace](https://statamic.com/marketplace/addons/translation-manager).
 
@@ -24,8 +26,8 @@ The exported file can then be modified by a translation agency or yourself, and 
 | List          | ✅         | ✅         |
 | Array         | ✅         | ✅         |
 | Tags          | ✅         | ✅         |
-| Replicator    | ✅         |            |
-| Table         |            |            |
+| Replicator    | ✅         | ✅         |
+| Table         | ✅         | ✅         |
 
 More field types will be added. Feel free to open an issue if you're missing a specific type.
 
