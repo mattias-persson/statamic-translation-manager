@@ -40,11 +40,11 @@ class Exporter
 
     protected function parseConfig($config)
     {
-        if (is_string($this->config['exclude_page_ids'])) {
+        if (is_string($config['exclude_page_ids'])) {
             $config['exclude_page_ids'] = explode(',', $config['exclude_page_ids']);
         }
 
-        if (is_string($this->config['exclude_collection_slugs'])) {
+        if (is_string($config['exclude_collection_slugs'])) {
             $config['exclude_collection_slugs'] = explode(',', $config['exclude_collection_slugs']);
         }
 
