@@ -101,10 +101,12 @@ class Field
         // Arrays are formatted as field.index. We only want the field name.
         $field = explode('.', $field)[0];
 
-        if (!empty($fieldset['fields'][$field])) {
-            return $fieldset['fields'][$field] ?? $fieldset['fields'][$field];
-        } elseif (!empty($fieldset['sections']['main']['fields'][$field])) {
-            return $fieldset['sections']['main']['fields'][$field] ?? $fieldset['sections']['main']['fields'][$field];
+        if (isset($fieldset['sections'])) {
+            $fieldset['fields'] = collect($fieldset['sections'])->flatMap(function ($section) {
+                return $section['fields'] ?? [];
+            })->toArray();
         }
+
+        return $fieldset['fields'][$field] ?? null;
     }
 }
