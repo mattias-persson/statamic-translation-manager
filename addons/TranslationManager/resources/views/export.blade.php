@@ -65,15 +65,15 @@
                         </small>
 
                         <div class="select select-full"
-                            data-content="All pages"
+                            data-content="No pages"
                             id="page-wrapper">
 
                             <select name="page"
                                 id="page-selector"
                                 class="form-control"
                                 onchange="setSelectedValue('page')">
-                                <option value="all" selected>All pages</option>
-                                <option value="no">No pages</option>
+                                <option value="no" selected>No pages</option>
+                                <option value="all">All pages</option>
                                 <option disabled>------</option>
                                 @foreach($pages as $page)
                                     <option value="{{$page->id()}}">{{$page->get('title')}}</option>
@@ -93,15 +93,15 @@
                         </small>
 
                         <div class="select select-full"
-                            data-content="All globals"
+                            data-content="No globals"
                             id="global-wrapper">
 
                             <select name="global"
                                 id="global-selector"
                                 class="form-control"
                                 onchange="setSelectedValue('global')">
-                                <option value="all" selected>All globals</option>
-                                <option value="no">No globals</option>
+                                <option value="no" selected>No globals</option>
+                                <option value="all">All globals</option>
                                 <option disabled>------</option>
                                 @foreach($globals as $global)
                                     <option value="{{$global->id()}}">{{$global->get('title')}}</option>
@@ -121,15 +121,15 @@
                         </small>
 
                         <div class="select select-full"
-                            data-content="All collections"
+                            data-content="No collections"
                             id="collection-wrapper">
 
                             <select name="collection"
                                 id="collection-selector"
                                 class="form-control"
                                 onchange="setSelectedValue('collection')">
-                                <option value="all" selected>All collections</option>
-                                <option value="no">No collection</option>
+                                <option value="no" selected>No collection</option>
+                                <option value="all">All collections</option>
                                 <option disabled>------</option>
                                 @foreach($collections as $collection)
                                     <option value="{{$collection->path()}}">{{$collection->get('title')}}</option>
@@ -149,15 +149,15 @@
                         </small>
 
                         <div class="select select-full"
-                            data-content="All taxonomies"
+                            data-content="No taxonomies"
                             id="taxonomy-wrapper">
 
                             <select name="taxonomy"
                                 id="taxonomy-selector"
                                 class="form-control"
                                 onchange="setSelectedValue('taxonomy')">
-                                <option value="all" selected>All taxonomies</option>
-                                <option value="no">No taxonomies</option>
+                                <option value="no" selected>No taxonomies</option>
+                                <option value="all">All taxonomies</option>
                                 <option disabled>------</option>
                                 @foreach($taxonomies as $taxonomy)
                                     <option value="{{$taxonomy->path()}}">{{$taxonomy->get('title')}}</option>
