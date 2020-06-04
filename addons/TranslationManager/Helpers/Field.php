@@ -107,6 +107,15 @@ class Field
             })->toArray();
         }
 
+        // Merge 'partial' fieldtypes into fields array
+        $fieldset['fields'] = collect($fieldset['fields'])->flatMap(function ($field, $key) {
+            if ($field['type'] === 'partial') {
+                return Fieldset::get($field['fieldset'])->contents()['fields'];
+            }
+
+            return [$key => $field];
+        })->toArray();
+
         return $fieldset['fields'][$field] ?? null;
     }
 }
