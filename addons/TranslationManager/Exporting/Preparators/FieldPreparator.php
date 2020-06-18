@@ -28,7 +28,15 @@ class FieldPreparator
         // Reset the fields for each item.
         $this->fields = [];
 
-        foreach ($item->in(Locale::default())->data() as $fieldName => $value) {
+        $localizedItem = $item->in(Locale::default());
+
+        $data = $localizedItem->data();
+
+        if ($slug = @$localizedItem->slug()) {
+            $data['slug'] = $slug;
+        }
+
+        foreach ($data as $fieldName => $value) {
             $field = new Field($item, $fieldName);
 
             // Determine whether the field should be translated, or skipped.
