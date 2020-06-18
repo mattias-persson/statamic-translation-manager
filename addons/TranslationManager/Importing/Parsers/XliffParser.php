@@ -101,8 +101,8 @@ class XliffParser
             $translations[] = [
                 'field_name' => $metaData[0],
                 'field_type' => $metaData[1],
-                'source' => (string) $unit->source,
-                'target' => (string) $unit->target,
+                'source' => $this->getValue($unit->source),
+                'target' => $this->getValue($unit->target),
             ];
         }
 
@@ -129,13 +129,34 @@ class XliffParser
             $translations[] = [
                 'field_name' => $metaData[0],
                 'field_type' => $metaData[1],
-                'source' => (string) $unit->source,
-                'target' => (string) $unit->target,
+                'source' => $this->getValue($unit->source),
+                'target' => $this->getValue($unit->target),
             ];
 
             $i++;
         }
 
         return $translations;
+    }
+
+    /**
+     * Get the value and ensure booleans are cast correctly.
+     *
+     * @param string $value
+     * @return string|bool
+     */
+    protected function getValue($value)
+    {
+        $value = (string) $value;
+
+        if ($value === 'true') {
+            $value = true;
+        }
+
+        if ($value === 'false') {
+            $value = false;
+        }
+
+        return $value;
     }
 }
