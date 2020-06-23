@@ -2,6 +2,7 @@
 
 namespace Statamic\Addons\TranslationManager\Helpers;
 
+use Statamic\API\Arr;
 use Statamic\API\Fieldset;
 
 class Field
@@ -109,7 +110,7 @@ class Field
 
         // Merge 'partial' fieldtypes into fields array
         $fieldset['fields'] = collect($fieldset['fields'])->flatMap(function ($field, $key) {
-            if ($field['type'] === 'partial') {
+            if (Arr::get($field, 'type') === 'partial') {
                 return Fieldset::get($field['fieldset'])->contents()['fields'];
             }
 
