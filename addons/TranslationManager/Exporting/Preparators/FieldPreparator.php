@@ -73,8 +73,7 @@ class FieldPreparator
             case 'suggest':
             case 'radio':
             case 'checkboxes':
-                continue;
-                break;
+                return;
 
             case 'array':
             case 'collection':
