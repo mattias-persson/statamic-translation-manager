@@ -111,7 +111,7 @@ class Field
         // Merge 'partial' fieldtypes into fields array
         $fieldset['fields'] = collect($fieldset['fields'])->flatMap(function ($field, $key) {
             if (Arr::get($field, 'type') === 'partial') {
-                return Fieldset::get($field['fieldset'])->contents()['fields'];
+                return Fieldset::get($field['fieldset'])->contents()['fields'] ?? [];
             }
 
             return [$key => $field];
