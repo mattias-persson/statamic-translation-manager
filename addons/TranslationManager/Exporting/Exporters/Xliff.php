@@ -84,9 +84,20 @@ class Xliff
     protected function addUnit($field)
     {
         // Apply the original value.
-        $this->xliff->file()->body()->unit(true)->setAttribute('id', $field['name'])->source(true)->setTextContent($field['original']);
+        $this->xliff->file()->body()->unit(true)->setAttribute('id', $field['name'])->source(true)->setTextContent($this->getValue($field['original']));
 
         // Apply the translated value.
-        $this->xliff->file()->body()->unit()->target(true)->setTextContent($field['localized']);
+        $this->xliff->file()->body()->unit()->target(true)->setTextContent($this->getValue($field['localized']));
+    }
+
+    /**
+     * Get the value and ensure booleans are cast to strings.
+     *
+     * @param string|bool $value
+     * @return string
+     */
+    protected function getValue($value)
+    {
+        return is_bool($value) ? $value === true ? 'true' : 'false' : $value;
     }
 }
